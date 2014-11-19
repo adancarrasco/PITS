@@ -82,7 +82,7 @@
         <label mean-token="'create-brd-url'" for="brdUrl" class="col-md-4 control-label">BRD Url</label>
         <label name="lBrdUrl" class="editable col-md-8" data-ng-init="brdUrl=false" data-ng-model="task.brd_url" data-ng-hide="brdUrl" data-ng-click="brdUrl=hasAuthorization(task) ? true : false;" id="lBrdUrl">{{task.brd_url}}</label>
         <div class="col-md-8">
-          <input type="url" class="form-control" placeholder="http://sharepoint.esurance.com/myTask" data-ng-show="brdUrl" data-ng-blur="brdUrl=false; update(taskForm.$valid)" ng-model="task.brd_url" />
+          <input type="url" class="form-control" placeholder="http://sharepoint.domain.com/myTask" data-ng-show="brdUrl" data-ng-blur="brdUrl=false; update(taskForm.$valid)" ng-model="task.brd_url" />
         </div>
       </div>
     </div>
