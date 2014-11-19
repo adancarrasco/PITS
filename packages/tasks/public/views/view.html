@@ -1,0 +1,131 @@
+<section data-ng-controller="TasksController" data-ng-init="findOne()">
+  <!--<div data-ng-if="hasAuthorization(task)">
+    <a class="btn" href="/#!/tasks/{{task._id}}/edit">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn" data-ng-click="remove(task);">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>-->
+  <form name="taskForm" class="form-horizontal col-md-10" role="form" data-ng-submit="create(taskForm.$valid)" novalidate>
+    <div class="form-group col-md-6">
+      <div class="form-group" ng-class="{ 'has-error' : submitted && taskForm.name.$invalid }">
+        <label mean-token="'create-type'" for="type" class="col-md-4 control-label">Type</label>
+        <label name="lType" class="editable col-md-8" data-ng-init="taskType=false" data-ng-model="task.type" data-ng-hide="taskType" data-ng-click="taskType=hasAuthorization(task) ? true : false;" id="lType">{{task.type}}</label>
+        <div class="col-md-8">
+          <select name="type" id="type" data-ng-model="task.type" data-ng-options="t for t in types track by t" class="form-control" data-ng-show="taskType" data-ng-blur="taskType=false; update(taskForm.$valid)">
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label mean-token="'create-name'" class="col-md-4 control-label">Name</label>
+        <label name="name" class="editable col-md-8" data-ng-init="taskName=false" data-ng-model="task.name" data-ng-hide="taskName" data-ng-click="taskName= hasAuthorization(task) ? true : false;" id="name">{{task.name}}</label>
+        <div class="col-md-8">
+          <input name="editTaskName" type="text" class="form-control" data-ng-show="taskName" data-ng-blur="taskName=false; update(taskForm.$valid)" data-ng-model="task.name" id="editTaskName" placeholder="14-PRO-163" required/>
+          <div ng-show="submitted && taskForm.name.$invalid" class="help-block">
+            <p ng-show="taskForm.name.$error.required">Name is required</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error' : submitted && taskForm.time.$invalid }">
+        <label mean-token="'create-time'" class="col-md-4 control-label">Time</label>
+        <label name="time" class="editable col-md-1" data-ng-init="taskTime=false" data-ng-model="task.time" data-ng-hide="taskTime" data-ng-click="taskTime=hasAuthorization(task) ? true : false;" id="time">{{task.time}}</label>
+        <div class="col-md-3" data-ng-show="taskTime">
+          <input name="editTime" type="text" class="form-control" data-ng-blur="taskTime=false; update(taskForm.$valid)" data-ng-model="task.time" id="editTaskTime" placeholder="12" required/>
+          <div ng-show="submitted && taskForm.time.$invalid" class="help-block">
+            <p ng-show="taskForm.time.$error.required">Time is required</p>
+          </div>
+        </div>
+        <label class="col-md-4 time-hrs">hrs</label>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error' : submitted && taskForm.completed_by.$invalid }">
+        <label mean-token="'create-completed_by'" class="col-md-4 control-label">Complete by</label>
+        <label name="lCompleted_by" class="editable col-md-8" data-ng-init="completedBy=false" data-ng-model="task.completed_by" data-ng-hide="completedBy" data-ng-click="completedBy=hasAuthorization(task) ? true : false;" id="lCompletedBy">{{task.completed_by | date: 'dd/MM/yyyy'}}</label>
+        <div class="col-md-8">
+          <input name="completed_by" type="date" class="form-control" data-ng-show="completedBy" data-ng-model="task.completed_by" id="completed_by" data-ng-blur="completedBy=false; update(taskForm.$valid)" required/>
+          <div ng-show="submitted && taskForm.completed_by.$invalid" class="help-block">
+            <p ng-show="taskForm.completed_by.$error.required">Completed by date is required</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label mean-token="'create-status'" for="status" class="col-md-4 control-label">Status</label>
+        <label name="lStatus" class="editable col-md-8" data-ng-init="taskStatus=false" data-ng-model="task.status" data-ng-hide="taskStatus" data-ng-click="taskStatus=hasAuthorization(task) ? true : false;" id="lStuatus">{{task.status}}</label>
+        <div class="col-md-8">
+          <select name="status" id="status" data-ng-model="task.status" data-ng-options="s for s in status track by s" class="form-control" data-ng-show="taskStatus" data-ng-blur="taskStatus=false; update(taskForm.$valid)">
+          </select>
+        </div>
+      </div>
+      <div data-ng-controller="AssignedToCtrl" data-ng-init="find()" class="form-group">
+        <label mean-token="'create-assigned_to'" for="assigned_to" class="col-md-4 control-label">Assign to</label>
+        <label id="lAssignedTo" class="editable col-md-8" data-ng-init="assignedTo=false" data-ng-model="task.assigned_to" data-ng-hide="assignedTo" data-ng-click="assignedTo=hasAuthorization(task) ? true : false;">{{assigned_to.name}}</label>
+        <div class="col-md-8">
+          <select name="assigned_to" id="assigned_to" class="form-control" data-ng-show="assignedTo" data-ng-blur="assignedTo=false; update(taskForm.$valid)"
+            data-ng-options="u.name for u in users track by u._id"
+            data-ng-model="assigned_to">
+          </select>
+        </div>
+      </div>
+      <div data-ng-controller="ReportToCtrl" data-ng-init="find()" class="form-group">
+        <label mean-token="'create-report_to'" for="report_to" class="col-md-4 control-label">Report to</label>
+        <label id="lReportTo" class="editable col-md-8" data-ng-init="reportTo=false" data-ng-model="task.report_to" data-ng-hide="reportTo" data-ng-click="reportTo=hasAuthorization(task) ? true : false;">{{report_to.name}}</label>
+        <div class="col-md-8">
+          <select name="report_to" id="report_to" class="form-control" data-ng-show="reportTo" data-ng-blur="reportTo=false; update(taskForm.$valid)"
+            data-ng-options="u.name for u in users track by u._id"
+            data-ng-model="report_to">
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label mean-token="'create-brd-url'" for="brdUrl" class="col-md-4 control-label">BRD Url</label>
+        <label name="lBrdUrl" class="editable col-md-8" data-ng-init="brdUrl=false" data-ng-model="task.brd_url" data-ng-hide="brdUrl" data-ng-click="brdUrl=hasAuthorization(task) ? true : false;" id="lBrdUrl">{{task.brd_url}}</label>
+        <div class="col-md-8">
+          <input type="url" class="form-control" placeholder="http://sharepoint.esurance.com/myTask" data-ng-show="brdUrl" data-ng-blur="brdUrl=false; update(taskForm.$valid)" ng-model="task.brd_url" />
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-8">
+      <label mean-token="'create-description'" for="description" class="col-md-2 control-label">Description</label>
+    </div>
+    <div class="col-md-offset-1 form-group col-md-12" ng-class="{ 'has-error' : submitted && taskForm.description.$invalid }">
+      <div class="col-md-10">
+        <label name="lDescription" class="editable col-md-12" data-ng-init="description=false" data-ng-model="task.description" data-ng-hide="description" data-ng-click="description=hasAuthorization(task) ? true : false;" id="lDescription">{{task.description}}</label>
+        <textarea name="description" data-ng-model="task.description" id="description" cols="30" rows="10" placeholder="Follow the BRD to create the new responsive UI for the mobile site." data-ng-show="description" data-ng-blur="description=false; update(taskForm.$valid)" class="form-control" required></textarea>
+        <div ng-show="submitted && taskForm.description.$invalid" class="help-block">
+          <p ng-show="taskForm.description.$error.required">Description is required</p>
+        </div>
+      </div>
+    </div>
+  </form>
+  <section data-ng-controller="CommentsController" data-ng-init="find()">
+    <h4 class="col-md-12">Comments</h4>
+    <div data-ng-repeat="comment in comments | orderBy: '+created'" class="col-md-12">
+      <div class="editing-comment">
+        <span class="glyphicon glyphicon-remove-circle"></span>
+      </div>
+      <div class="col-md-1">
+        <img class="comment-profile-pic" src="{{comment.profile_pic}}" alt="Generic profile picture"/>
+      </div>
+      <div class="col-md-10">
+        <p class="hidden commented_by">{{comment.commented_by}}</p>
+        <h5><strong>{{comment.commented_by_name}}</strong></h5>
+        <p name="comment" class="col-md-12">{{comment.message}}</p>
+        <h5 class="float-left">Commented on <strong>{{comment.created | date: 'MMM/dd/yyyy HH:MM'}}</strong></h5>
+        <a class="edit-comment" data-ng-click="edit(comment, $event)">edit</a><a class="edit-comment" data-ng-click="remove(comment, $event)">delete</a>
+        <hr/>
+      </div>
+    </div>
+    <button id="restore-comment" class="btn btn-warning restore-comment" data-ng-click="restoreComment()" type="submit">restore comment</button>
+    <form name="commentForm" class="form-horizontal col-md-12" role="form" data-ng-submit="createOrUpdate(commentForm.$valid)">
+      <div class="col-md-10">
+        <textarea name="message" data-ng-model="message" id="message" cols="30" rows="10" placeholder="Add new comment" class="form-control"></textarea>
+      </div>
+      <div ng-show="submitted && commentForm.message.$invalid" class="help-block">
+        <p ng-show="commentForm.message.$error.required">Comment is required</p>
+      </div>
+      <button id="btnComment" name="btnComment" class="btn btn-info" type="submit">Comment</button>
+    </form>
+  </section>
+</section>

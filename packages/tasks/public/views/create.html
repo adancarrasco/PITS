@@ -1,0 +1,88 @@
+<section data-ng-controller="CreateTaskController" data-ng-init="loadDummyData()">
+  <form name="taskForm" class="form-horizontal col-md-10" role="form" data-ng-submit="create(taskForm.$valid)" novalidate>
+    <div class="form-group col-md-6">
+      <div class="form-group">
+        <label mean-token="'create-type'" for="type" class="col-md-4 control-label">Type</label>
+        <div class="col-md-8">
+          <select name="type" id="type" data-ng-model="selectedType" class="form-control" >
+            <option data-ng-repeat="t in types">{{t}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error' : submitted && taskForm.name.$invalid }">
+        <label mean-token="'create-name'" class="col-md-4 control-label">Task name</label>
+        <div class="col-md-8">
+          <input name="name" type="text" class="form-control" data-ng-model="name" id="name" placeholder="14-PRO-163" required>
+          <div ng-show="submitted && taskForm.name.$invalid" class="help-block">
+            <p ng-show="taskForm.name.$error.required">Name is required</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error' : submitted && taskForm.time.$invalid }">
+        <label mean-token="'create-time'" class="col-md-4 control-label">Time</label>
+        <div class="col-md-8">
+          <input name="time" type="text" class="form-control" data-ng-model="time" id="time" placeholder="12" required>
+          <div ng-show="submitted && taskForm.time.$invalid" class="help-block">
+            <p ng-show="taskForm.time.$error.required">Time is required</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error' : submitted && taskForm.completed_by.$invalid }">
+        <label mean-token="'create-completed_by'" class="col-md-4 control-label">Complete by</label>
+        <div class="col-md-8">
+          <input name="completed_by" type="date" class="form-control" data-ng-model="completed_by" id="completed_by" required>
+          <div ng-show="submitted && taskForm.completed_by.$invalid" class="help-block">
+            <p ng-show="taskForm.completed_by.$error.required">Completed by date is required</p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="form-group col-md-6">
+      <div class="form-group">
+        <label mean-token="'create-status'" for="status" class="col-md-4 control-label">Task status</label>
+        <div class="col-md-8">
+          <select name="status" id="status" data-ng-model="selectedStatus" class="form-control" >
+            <option data-ng-repeat="s in status">{{s}}</option>
+          </select>
+        </div>
+      </div>
+      <div data-ng-controller="AssignedToCtrl" data-ng-init="find()" class="form-group">
+        <label mean-token="'create-assigned_to'" for="assigned_to" class="col-md-4 control-label">Assign to</label>
+        <div class="col-md-8">
+          <select name="assigned_to" data-ng-model="assigned_to" id="assigned_to" class="form-control" >
+            <option data-ng-repeat="user in users" value="{{user._id}}">{{user.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div data-ng-controller="ReportToCtrl" data-ng-init="find()" class="form-group">
+        <label mean-token="'create-report_to'" for="report_to" class="col-md-4 control-label">Report to</label>
+        <div class="col-md-8">
+          <select name="report_to" data-ng-model="report_to" id="report_to" class="form-control" >
+            <option data-ng-repeat="user in users" value="{{user._id}}">{{user.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label mean-token="'create-brd-url'" for="brdUrl" class="col-md-4 control-label">BRD Url</label>
+        <div class="col-md-8">
+          <input id="brd_url" type="url" class="form-control" placeholder="http://sharepoint.esurance.com/myTask" ng-model="brd_url" />
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-8">
+      <label mean-token="'create-description'" for="description" class="col-md-2 control-label">Description</label>
+    </div>
+    <div class="col-md-offset-1 form-group col-md-12" ng-class="{ 'has-error' : submitted && taskForm.description.$invalid }">
+      <div class="col-md-10">
+        <textarea name="description" data-ng-model="description" id="description" cols="30" rows="10" placeholder="Follow the BRD to create the new responsive UI for the mobile site." class="form-control" required></textarea>
+        <div ng-show="submitted && taskForm.description.$invalid" class="help-block">
+          <p ng-show="taskForm.description.$error.required">Description is required</p>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-info">Create</button>
+      </div>
+    </div>
+  </form>
+</section>

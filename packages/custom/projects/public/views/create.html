@@ -1,0 +1,51 @@
+<section data-ng-controller="ProjectsController">
+  <form name="projectForm" class="form-horizontal col-md-12" role="form" data-ng-submit="create(projectForm.$valid)" novalidate>
+    <div class="form-group col-md-4">
+      <div class="form-group" ng-class="{ 'has-error' : submitted && projectForm.pId.$invalid }">
+        <label mean-token="'create-pId'" class="col-md-4 control-label">Project Id</label>
+        <div class="col-md-8">
+          <input name="pId" type="text" class="form-control" data-ng-model="p_id" id="pId" placeholder="14-PRO-163" required>
+          <div ng-show="submitted && projectForm.pId.$invalid" class="help-block">
+            <p ng-show="projectForm.pId.$error.required">Project Id is required</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <div class="form-group" ng-class="{ 'has-error' : submitted && projectForm.name.$invalid }">
+        <label mean-token="'create-name'" class="col-md-4 control-label">Name</label>
+        <div class="col-md-8">
+          <input name="name" type="text" class="form-control" data-ng-model="name" id="name" placeholder="Expand DriveSense Discount to Web Users" required>
+          <div ng-show="submitted && projectForm.name.$invalid" class="help-block">
+            <p ng-show="projectForm.name.$error.required">Name is required</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <div class="form-group" ng-class="{ 'has-error' : submitted && projectForm.release.$invalid }">
+        <label mean-token="'create-release'" class="col-md-4 control-label">Release</label>
+        <div class="col-md-8">
+          <input name="release" type="text" class="form-control" data-ng-model="release" id="release" placeholder="14-REL-08" required>
+          <div ng-show="submitted && projectForm.release.$invalid" class="help-block">
+            <p ng-show="projectForm.release.$error.required">Release is required</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-8">
+      <label mean-token="'create-description'" for="description" class="col-md-2 control-label">Brief</label>
+    </div>
+    <div class="col-md-offset-1 form-group col-md-12" ng-class="{ 'has-error' : submitted && projectForm.description.$invalid }">
+      <div class="col-md-10">
+        <textarea name="description" data-ng-model="description" id="description" cols="30" rows="10" placeholder="Follow the BRD to create the new responsive UI for the mobile site." class="form-control" required></textarea>
+        <div ng-show="submitted && projectForm.description.$invalid" class="help-block">
+          <p ng-show="projectForm.description.$error.required">Brief is required</p>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-info">Create</button>
+      </div>
+    </div>
+  </form>
+</section>

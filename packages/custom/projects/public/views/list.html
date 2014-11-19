@@ -1,0 +1,38 @@
+<section data-ng-controller="ProjectsController" data-ng-init="find()">
+  <h2>Projects</h2>
+  <div class="col-md-12 form-group">
+    <h5 class="col-md-1">Search:</h5>
+    <div class="col-md-3">
+      <input class="form-control" data-ng-model="search.$"/>
+    </div>
+    <h5 class="col-md-1">Filter by:</h5>
+    <div class="col-md-3">
+      <select class="form-control" data-ng-model="filterBy">
+        <option selected value="all">All</option>
+        <option value="status">Status</option>
+        <option value="type">Type</option>
+        <option value="name">Name</option>
+        <option value="description">Description</option>
+      </select>
+    </div>
+  </div>
+  <table data-ng-table="tableParams" class="table table-hover">
+    <tr data-ng-repeat="project in $data | filter:search:strict">
+      <td data-title="'Release'" sortable="'release'" data-ng-click="go(project._id)">{{project.release}}</td>
+      <td data-title="'Project Id'" sortable="'project_id'" data-ng-click="go(project._id)">{{project.p_id}}</td>
+      <td data-title="'Project name'" sortable="'name'" data-ng-click="go(project._id)">
+        <span>{{project.name}}</span>
+      </td>
+      <td data-title="'Description'" sortable="'description'" data-ng-click="go(project._id)">{{project.description}}</td>
+      <td data-ng-if="hasAuthorization(project)">
+          <!--<a class="btn" href="/#!/projects/{{project._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+          </a>-->
+          <a class="btn" title="delete" data-ng-click="remove(project);">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+      </td>
+    </tr>
+  </table>
+  <h1 data-ng-hide="!projects || projects.length">No projects yet. <br> Why don't you <a href="/#!/projects/create">Create One</a>?</h1>
+</section>
