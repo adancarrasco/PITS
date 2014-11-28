@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  db: 'mongodb://localhost/mean-test',
+  db: 'mongodb://localhost/PITS-test',
   port: 3001,
   app: {
     name: 'project and issue tracking system'
